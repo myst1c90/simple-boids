@@ -1,0 +1,12 @@
+
+ORGANIZAÇÃO
+   * organizar módulos
+      * backend
+          * vector
+          * color
+          * bird
+          * tower
+      * frontend
+          * boids
+          * main
+		
