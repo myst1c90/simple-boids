@@ -5,33 +5,48 @@ CC = gcc
 CPP = g++
 
 all: test.o color.o vector.h color.o vector.h image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o
-	$(CPP) test.o color.o image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o $(FLAGS) $(LIBS) -o $(TARGET)
+	$(CPP) frontend/stb_image_aug.o frontend/image_helper.o frontend/image_DXT.o frontend/SOIL.o frontend/glTexture.o \
+		backend/color.o \
+		frontend/test.o \
+		$(FLAGS) $(LIBS) -o $(TARGET)
 
 
-test.o: test.h test.cpp vector.h
-	$(CPP) $(FLAGS) test.cpp -c
+#	MAIN
+
+test.o: frontend/test.h frontend/test.cpp
+	$(CPP) -c $(FLAGS) frontend/test.cpp -o frontend/test.o
+
+
+# 	BACKEND
+
+vector.h: backend/vector.h
 	
-color.o: color.h color.cpp
-	$(CPP) $(FLAGS) color.cpp -c
+color.o: backend/color.h backend/color.cpp
+	$(CPP) -c $(FLAGS) backend/color.cpp -o backend/color.o
 	
 		
-# 	SOIL - texture
+# 	FRONTEND
 
-glTexture.o: glTexture.cpp
-	$(CPP) -c $(FLAGS) glTexture.cpp -o glTexture.o
+glTexture.o: frontend/glTexture.cpp
+	$(CPP) -c $(FLAGS) frontend/glTexture.cpp -o frontend/glTexture.o
 
-SOIL.o: soil/SOIL.c
-	$(CC) -c $(FLAGS) soil/SOIL.c 
+SOIL.o: frontend/soil/SOIL.c
+	$(CC) -c $(FLAGS) frontend/soil/SOIL.c -o frontend/SOIL.o
 
-image_DXT.o: soil/image_DXT.c 
-	$(CC) -c $(FLAGS) soil/image_DXT.c 
+image_DXT.o: frontend/soil/image_DXT.c 
+	$(CC) -c $(FLAGS) frontend/soil/image_DXT.c -o frontend/image_DXT.o 
 
-image_helper.o: soil/image_helper.c 
-	$(CC) -c $(FLAGS) soil/image_helper.c 
+image_helper.o: frontend/soil/image_helper.c 
+	$(CC) -c $(FLAGS) frontend/soil/image_helper.c -o frontend/image_helper.o
 
-stb_image_aug.o: soil/stb_image_aug.c
-	$(CC) -c $(FLAGS) soil/stb_image_aug.c
+stb_image_aug.o: frontend/soil/stb_image_aug.c
+	$(CC) -c $(FLAGS) frontend/soil/stb_image_aug.c -o frontend/stb_image_aug.o
 	
 
+
 clean:
-	-rm -f *.o $(TARGET) *~ .*.swp
+	rm -f *.o $(TARGET) *~ .*.swp \
+		frontend/*.o frontend/*~ frontend/*.swp \
+		backend/*.o backend/*~ backend/*.swp 
+
+
