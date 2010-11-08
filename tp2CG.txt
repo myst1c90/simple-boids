@@ -2,11 +2,13 @@
 ORGANIZAÇÃO
    * organizar módulos
       * backend
-          * vector
-          * color
-          * bird
-          * tower
+         * vector [ ok ]
+         * color  [ ok ]
+         * bird   [ ok ]
       * frontend
-          * boids
-          * main
+         * boids
+         * main
 		
+
+* Criar backend/Boids com lista de birds
+* glEntities possui "Boids boids" como atributo

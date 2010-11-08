@@ -4,17 +4,17 @@ FLAGS = -Wall
 CC = gcc
 CPP = g++
 
-all: test.o color.o vector.h color.o vector.h image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o
-	$(CPP) frontend/stb_image_aug.o frontend/image_helper.o frontend/image_DXT.o frontend/SOIL.o frontend/glTexture.o \
-		backend/color.o \
-		frontend/test.o \
+all: vector.h color.o entity.o bird.o boids.o color.o vector.h image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o glEntities.o main.o
+	$(CPP) backend/color.o backend/entity.o backend/bird.o backend/boids.o \
+		frontend/stb_image_aug.o frontend/image_helper.o frontend/image_DXT.o frontend/SOIL.o frontend/glTexture.o frontend/glEntities.o \
+		frontend/main.o \
 		$(FLAGS) $(LIBS) -o $(TARGET)
 
 
 #	MAIN
 
-test.o: frontend/test.h frontend/test.cpp
-	$(CPP) -c $(FLAGS) frontend/test.cpp -o frontend/test.o
+main.o: frontend/main.h frontend/main.cpp
+	$(CPP) -c $(FLAGS) frontend/main.cpp -o frontend/main.o
 
 
 # 	BACKEND
@@ -23,9 +23,21 @@ vector.h: backend/vector.h
 	
 color.o: backend/color.h backend/color.cpp
 	$(CPP) -c $(FLAGS) backend/color.cpp -o backend/color.o
+
+entity.o: backend/entity.h backend/entity.cpp
+	$(CPP) -c $(FLAGS) backend/entity.cpp -o backend/entity.o
+
+bird.o: backend/bird.h backend/bird.cpp
+	$(CPP) -c $(FLAGS) backend/bird.cpp -o backend/bird.o
+
+boids.o: backend/boids.h backend/boids.cpp
+	$(CPP) -c $(FLAGS) backend/boids.cpp -o backend/boids.o
 	
 		
 # 	FRONTEND
+
+glEntities.o: frontend/glEntities.cpp
+	$(CPP) -c $(FLAGS) frontend/glEntities.cpp -o frontend/glEntities.o
 
 glTexture.o: frontend/glTexture.cpp
 	$(CPP) -c $(FLAGS) frontend/glTexture.cpp -o frontend/glTexture.o

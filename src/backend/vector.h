@@ -18,15 +18,17 @@ template <typename T> struct Vector
 {
     T x;
     T y;
+    T z;
 
   public:
     
-    Vector(T x = 0,T y = 0):x(x),y(y){
+    Vector(T x = 0, T y = 0, T z = 0): x(x), y(y), z(z) {
     }
 
-    void set(T newX,T newY) {
+    void set(T newX, T newY, T newZ) {
         x = newX;
         y = newY;
+        z = newZ;
     }
 
     void setX(T newX) {
@@ -37,6 +39,10 @@ template <typename T> struct Vector
     	y = newY;
     }
 
+    void setZ(T newZ) {
+    	z = newZ;
+    }
+
     T getX() {
       return x;
     }
@@ -45,51 +51,61 @@ template <typename T> struct Vector
       return y;
     }
 
+    T getZ() {
+      return z;
+    }
+
     T scalar(Vector &V) {
-        return V.x * x + V.y * y;
+        return V.x * x + V.y * y + V.z * z;
     }
 
     const Vector<T> &operator=(const Vector<T> &v) {   
-        x= v.x; y= v.y;         
+        x = v.x;
+        y = v.y;
+        z = v.z;
         return *this;
     }
 
     bool operator==(const Vector<T> &v) {
-        return ( (x == v.x) && (y == v.y) );
+        return ( (x == v.x) && (y == v.y) && (z == v.z) );
     }
 
     bool operator!=(const Vector<T> &v) {
-        return ( (x != v.x) || (y != v.y) );
+        return ( (x != v.x) || (y != v.y) || (z != v.z) );
     }
     
     Vector<T> operator+(const Vector<T> &v) const {   
-        return Vector<T>(x+v.x,y+v.y);    
+        return Vector<T>( x+v.x, y+v.y, z+v.z );
     }
+
     const Vector<T> &operator+=(const Vector<T> &v) const {
         x += v.x;
         y += v.y; 
+        z += v.z;
         return *this;
     }
 
     Vector<T> operator-(const Vector<T> &v) const {   
-        return Vector<T>(x-v.x,y-v.y);    
+        return Vector<T>( x-v.x, y-v.y, z-v.z );
     }
+
     const Vector<T> &operator-=(const Vector<T> &v) const {
         x -= v.x;
-        y -= v.y; 
+        y -= v.y;
+        z -= v.z;
         return *this;
     }
     
     T operator*(const Vector<T> &v) const {   
-        return (x*v.x + y*v.y);
+        return (x*v.x + y*v.y + y*v.z);
     }   
 
     const Vector<T> operator*(const T num) const {   
-        return Vector<T>(x*num, y*num);
+        return Vector<T>(x*num, y*num, z*num);
     }   
 
     const Vector<T> operator/(const T num) const {
-        return Vector<T>(x/num, y/num);
+        return Vector<T>(x/num, y/num, z/num);
     }       
 
     float magnitude() const {   
@@ -101,7 +117,7 @@ template <typename T> struct Vector
 
         if(magnitude() > TOL) {    
             mag = magnitude();
-            return Vector<T>(x/mag, y/mag);
+            return Vector<T>(x/mag, y/mag, z/mag);
         }
         return Vector<T>(x,y);     
     }
@@ -122,12 +138,6 @@ template <typename T> struct Vector
         return rad * 180.0f / PI;
     }    
 
-    Vector<T> rotate(T angle) {
-        float nx, ny;
-        nx = x*cos(degrees2Radians(-angle)) + y*sin(degrees2Radians(-angle));
-        ny = -x*sin(degrees2Radians(-angle)) + y*cos(degrees2Radians(-angle));
-        return Vector<T>(nx, ny);    
-    }
 };
 
 
@@ -138,7 +148,12 @@ class vectorCmp
 
     bool operator()(const Vector<T> &a, const Vector<T> &b) {
         if (a.x == b.x) {
-            return (a.y < b.y);
+        	if(a.y == b.y) {
+        		return (a.z < b.z);
+        	}
+        	else {
+        		return (a.y < b.y);
+        	}
         }
         else {
             return (a.x < b.x);
