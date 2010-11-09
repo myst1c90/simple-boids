@@ -24,6 +24,7 @@ class Boids {
 		virtual ~Boids();
 
 		void addBoid(Bird *bird);
+		std::vector<Bird *> *getBoids();
 };
 
 #endif /* BOIDS_H_ */

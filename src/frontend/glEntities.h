@@ -31,6 +31,7 @@ class GLEntities {
 		// draw functions
 		void drawBird();
 
+		Boids *getBoids();
 };
 
 #endif /* GLENTITIES_H_ */

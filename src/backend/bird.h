@@ -9,11 +9,18 @@
 #define BIRD_H_
 
 #include "entity.h"
+#include "quat/quat.h"
 
 
 class Bird : public Entity {
 
 	Vector<float> *vel;		// velocity
+
+	float matrix[16];
+	quat_t qx;
+	quat_t qy;
+	quat_t qz;
+
 
 
 	public:
@@ -24,6 +31,12 @@ class Bird : public Entity {
 		virtual ~Bird();
 
 		Vector<float> *getVel();
+
+		void updateMatrix();
+		void xRotate();
+		void yRotate();
+		float *getMatrix();
+
 };
 
 #endif /* BIRD_H_ */

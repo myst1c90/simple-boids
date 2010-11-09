@@ -21,6 +21,9 @@ GLEntities::~GLEntities() {
 }
 
 
+Boids *GLEntities::getBoids() {
+	return boids;
+}
 
 /**
  * draw functions

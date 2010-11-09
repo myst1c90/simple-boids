@@ -20,3 +20,6 @@ void Boids::addBoid(Bird *bird) {
 	boids->push_back(bird);
 }
 
+std::vector<Bird *> *Boids::getBoids() {
+	return boids;
+}

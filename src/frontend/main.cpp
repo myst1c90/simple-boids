@@ -127,7 +127,7 @@ void renderScene() {
 	printf("eyeX: %f, eyeY: %f\n", eyeX, eyeY);
 //	gluLookAt(eyeX, eyeY, 0.0, 0.0, -1.0, -1.0, 0.0, 0.0, 1.0);
 	//gluLookAt(eyeX, eyeY, 3.0, 0.0, 0.0, -4.0, 0.0, 0.0, 1.0);
-	gluLookAt(-0.0, -0.1, 2.0, 0.0, 0.0, -4.0, 0.0, 0.0, 1.0);
+	gluLookAt(-0.0, -0.2, 1.0, 0.0, 0.0, -4.0, 0.0, 0.0, 1.0);
 
 	glBegin(GL_QUADS);							// Draw a quad
 		glColor3f(0.5, 0.0, 0.0);
@@ -152,15 +152,22 @@ void renderScene() {
 
 	glPopMatrix();
 
-	glTranslatef(0.0f,0.0f,-1.0f);
-	glTranslatef(0.0f,0.0f,-vel);
-	glTranslatef(0.0f,vel,0.0f);
+	//glRotatef(mouseX, 0.0, 1.0, 0.0);
+//	glTranslatef(0.0f,0.0f,-vel);
+//	glTranslatef(0.0f,vel,0.0f);
 	//glRotatef(mouseX, 0.0, 1.0, -(mouseX/100)*1.0);
-	glRotatef(mouseX, 0.0, 1.0, 0.0);
-	glRotatef(-mouseY, 1.0, 0.0, 0.0);
+	//glRotatef(mouseX, 0.0, 1.0, 0.0);
+	//glRotatef(-mouseY, 1.0, 0.0, 0.0);
 
+	glPushMatrix();
+	std::vector<Bird *> *boids = ENTITIES->getBoids()->getBoids();
+	Bird *bird = (*boids)[0];
+	bird->updateMatrix();
+	glMultMatrixf(bird->getMatrix());
 	// draw bird
 	ENTITIES->drawBird();
+
+	glPopMatrix();
 
 	glPopMatrix();
 	glutSwapBuffers();
@@ -194,6 +201,9 @@ void drawBackground() {
  */
 
 void processNormalKeys(unsigned char key, int x, int y) {
+	std::vector<Bird *> *boids = ENTITIES->getBoids()->getBoids();
+	Bird *bird = (*boids)[0];
+
 	switch(key) {
 		case 'Q':
 		case 'q':
@@ -206,6 +216,14 @@ void processNormalKeys(unsigned char key, int x, int y) {
 		case 'S':
 		case 's':
 			vel -= 0.06;
+			break;
+		case 'g':
+		case 'G':
+			bird->xRotate();
+			break;
+		case 'h':
+		case 'H':
+			bird->yRotate();
 			break;
 	}
 }

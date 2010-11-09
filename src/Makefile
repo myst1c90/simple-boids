@@ -4,8 +4,8 @@ FLAGS = -Wall
 CC = gcc
 CPP = g++
 
-all: vector.h color.o entity.o bird.o boids.o color.o vector.h image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o glEntities.o main.o
-	$(CPP) backend/color.o backend/entity.o backend/bird.o backend/boids.o \
+all: quat.o vector.h color.o entity.o bird.o boids.o color.o vector.h image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o glEntities.o main.o
+	$(CPP) backend/quat/quat.o backend/color.o backend/entity.o backend/bird.o backend/boids.o \
 		frontend/stb_image_aug.o frontend/image_helper.o frontend/image_DXT.o frontend/SOIL.o frontend/glTexture.o frontend/glEntities.o \
 		frontend/main.o \
 		$(FLAGS) $(LIBS) -o $(TARGET)
@@ -18,6 +18,9 @@ main.o: frontend/main.h frontend/main.cpp
 
 
 # 	BACKEND
+
+quat.o: backend/quat/quat.h backend/quat/quat.cpp
+	$(CPP) -c $(FLAGS) backend/quat/quat.cpp -o backend/quat/quat.o
 
 vector.h: backend/vector.h
 	
@@ -59,6 +62,7 @@ stb_image_aug.o: frontend/soil/stb_image_aug.c
 clean:
 	rm -f *.o $(TARGET) *~ .*.swp \
 		frontend/*.o frontend/*~ frontend/*.swp \
-		backend/*.o backend/*~ backend/*.swp 
+		backend/*.o backend/*~ backend/*.swp \
+		backend/quat/*.o backend/quat/*~ backend/quat/*.swp
 
 
