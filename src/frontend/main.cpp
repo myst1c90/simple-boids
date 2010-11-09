@@ -155,7 +155,8 @@ void renderScene() {
 	glTranslatef(0.0f,0.0f,-1.0f);
 	glTranslatef(0.0f,0.0f,-vel);
 	glTranslatef(0.0f,vel,0.0f);
-	glRotatef(mouseX, 0.0, 1.0, -(mouseX/100)*1.0);
+	//glRotatef(mouseX, 0.0, 1.0, -(mouseX/100)*1.0);
+	glRotatef(mouseX, 0.0, 1.0, 0.0);
 	glRotatef(-mouseY, 1.0, 0.0, 0.0);
 
 	// draw bird
