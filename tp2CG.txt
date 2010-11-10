@@ -1,5 +1,27 @@
 
 ORGANIZAÇÃO
+TODO
+    Backend
+	* remover entity
+	* bird deve conter vários campos
+		* quaternion
+		* pMatrix
+		* MaxForwardVelocity = 5.0f;
+		* MaxPitchRate = 5.0f;
+		* MaxHeadingRate = 5.0f;
+		* PitchDegrees = 0.0f;
+		* HeadingDegrees = 0.0f;
+    FrontEnd
+	* updateBoidsPosition
+	* funções de mouse
+	* funções de teclado
+	* desenho do pássaro
+	
+
+		
+
+
+
    * organizar módulos
       * backend
          * vector [ ok ]
@@ -12,3 +34,5 @@ ORGANIZAÇÃO
 
 * Criar backend/Boids com lista de birds
 * glEntities possui "Boids boids" como atributo
+
+
