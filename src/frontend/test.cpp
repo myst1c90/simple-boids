@@ -150,19 +150,28 @@ void renderGame() {
 
 	glPopMatrix();
 
-	glTranslatef(0.0f,0.0f,-1.0f);
-	glTranslatef(0.0f,0.0f,-vel);
-	glTranslatef(0.0f,vel,0.0f);
-	glRotatef(mouseX, 0.0, 1.0, -(mouseX/100)*1.0);
-	glRotatef(-mouseY, 1.0, 0.0, 0.0);
+//	glTranslatef(0.0f,0.0f,-1.0f);
+//	glTranslatef(0.0f,0.0f,-vel);
+//	glTranslatef(0.0f,vel,0.0f);
+//	glRotatef(mouseX, 0.0, 1.0, -(mouseX/100)*1.0);
+//	glRotatef(-mouseY, 1.0, 0.0, 0.0);
+
+	glPushMatrix();
+
+	bird->updateMatrix();
+	glMultMatrixf(bird->getMatrix());
+	bird->updatePosition();
+	// Translate to our new position.
+	glTranslatef(-bird->getPos()->getX(), -bird->getPos()->getY(), -bird->getPos()->getZ();
 	drawBird();
 
+	glPopMatrix();
 
 	glPopMatrix();
 	glutSwapBuffers();
 
-	rtri+=2.0;
-	rquad=rquad-0.9f;
+//	rtri+=2.0;
+//	rquad=rquad-0.9f;
 	//roll-=0.005f;		// Roll the clouds
 	//printf("%f\n", roll);
 }
@@ -193,7 +202,6 @@ void drawBird() {
 	double fsize = bsize+0.1*bsize;
 	double flevel = 0;
 
-	glPushMatrix();
 	glBegin(GL_TRIANGLES);
 
 		// heard
@@ -282,7 +290,6 @@ void drawBird() {
 		glVertex3f( tsize,0.0, tsize/2);
 	glEnd();
 
-	glPopMatrix();
 }
 
 /**

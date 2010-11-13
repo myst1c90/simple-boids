@@ -78,7 +78,7 @@ template <typename T> struct Vector
         return Vector<T>( x+v.x, y+v.y, z+v.z );
     }
 
-    const Vector<T> &operator+=(const Vector<T> &v) const {
+    Vector<T> &operator+=(const Vector<T> &v) {
         x += v.x;
         y += v.y; 
         z += v.z;
@@ -102,7 +102,14 @@ template <typename T> struct Vector
 
     const Vector<T> operator*(const T num) const {   
         return Vector<T>(x*num, y*num, z*num);
-    }   
+    }
+
+    Vector<T> &operator*=(const T num) {
+        x *= num;
+        y *= num;
+        z *= num;
+        return *this;
+    }
 
     const Vector<T> operator/(const T num) const {
         return Vector<T>(x/num, y/num, z/num);

@@ -160,10 +160,20 @@ void renderScene() {
 	//glRotatef(-mouseY, 1.0, 0.0, 0.0);
 
 	glPushMatrix();
+
 	std::vector<Bird *> *boids = ENTITIES->getBoids()->getBoids();
 	Bird *bird = (*boids)[0];
 	bird->updateMatrix();
+	// Translate to our new position.
+		bird->updatePosition();
+		glTranslatef(-bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ());
+
 	glMultMatrixf(bird->getMatrix());
+
+	printf("pos: (%f, %f, %f)\n", -bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ());
+	printf("dir: (%f, %f, %f)\n", bird->getDir()->getX(), -bird->getDir()->getY(), bird->getDir()->getZ());
+	printf("degree: (%f, %f)\n\n", bird->getDegreesX(), bird->getDegreesY());
+
 	// draw bird
 	ENTITIES->drawBird();
 
@@ -210,20 +220,27 @@ void processNormalKeys(unsigned char key, int x, int y) {
 			exit(0);
 		case 'W':
 		case 'w':
-			roll-=0.005f;		// Roll the clouds
-			vel += 0.06;
+			bird->rotateX(-5.0);
 			break;
 		case 'S':
 		case 's':
-			vel -= 0.06;
+			bird->rotateX(5.0);
 			break;
-		case 'g':
-		case 'G':
-			bird->xRotate();
+		case 'A':
+		case 'a':
+			bird->rotateY(-5.0);
 			break;
-		case 'h':
-		case 'H':
-			bird->yRotate();
+		case 'D':
+		case 'd':
+			bird->rotateY(5.0);
+			break;
+		case 'i':
+		case 'I':
+			bird->updateVelocity(0.001);
+			break;
+		case 'k':
+		case 'K':
+			bird->updateVelocity(-0.001);
 			break;
 	}
 }

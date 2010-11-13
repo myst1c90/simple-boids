@@ -63,7 +63,8 @@ void Quaternion::createMatrix(float *pMatrix) {
 	pMatrix[14] = 0;
 	pMatrix[15] = 1.0f;
 
-	// now pMatrix[] is a 4x4 homogeneous matrix that can be applied to an OpenGL Matrix
+	// now pMatrix[] is a 4x4 homogeneous matrix
+	// that can be applied to an OpenGL Matrix
 }
 
 Quaternion Quaternion::operator *(Quaternion q) {

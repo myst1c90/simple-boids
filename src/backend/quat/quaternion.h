@@ -8,6 +8,14 @@
 #ifndef _QUATERNION_H_INCLUDED_
 #define _QUATERNION_H_INCLUDED_
 
+
+#include <math.h>
+
+#ifndef 	PI
+#define		PI		3.14159265358979323846
+#endif
+
+
 class Quaternion {
 
 	float m_w;

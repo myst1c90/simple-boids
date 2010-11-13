@@ -19,8 +19,8 @@ main.o: frontend/main.h frontend/main.cpp
 
 # 	BACKEND
 
-quat.o: backend/quat/quat.h backend/quat/quat.cpp
-	$(CPP) -c $(FLAGS) backend/quat/quat.cpp -o backend/quat/quat.o
+quat.o: backend/quat/quaternion.h backend/quat/quaternion.cpp
+	$(CPP) -c $(FLAGS) backend/quat/quaternion.cpp -o backend/quat/quat.o
 
 vector.h: backend/vector.h
 	

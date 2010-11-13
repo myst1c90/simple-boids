@@ -10,7 +10,7 @@
 
 GLEntities::GLEntities() {
 	Bird *bird = new Bird(new Vector<float>(0.0, 0.0, 0.0),
-			new Vector<float>(0.02f, 0.14f, 0.02f),
+			new Vector<float>(0.00f, 0.14f, 0.02f),
 			new Color(0.0, 0.0, 1.0));
 
 	boids = new Boids();
@@ -36,6 +36,7 @@ void GLEntities::drawBird() {
 	double tsize = size;
 	double wsize = bsize+0.1*bsize;
 	double wlevel = 0;
+
 
 	glPushMatrix();
 	glBegin(GL_TRIANGLES);

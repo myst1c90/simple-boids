@@ -9,19 +9,25 @@
 #define BIRD_H_
 
 #include "entity.h"
-#include "quat/quat.h"
+#include "quat/quaternion.h"
+
+#define		DEGREESX_DEFAULT_VALUE		0.0
+#define		DEGREESY_DEFAULT_VALUE		0.0
+#define		MAX_DEGREESX				5.0
+#define		MAX_DEGREESY				5.0
+#define		MAX_VELOCITY				5.0
 
 
 class Bird : public Entity {
 
-	Vector<float> *vel;		// velocity
+	float vel;				// velocity
+	Vector<float> *dir;		// direction vector
 
-	float matrix[16];
-	quat_t qx;
-	quat_t qy;
-	quat_t qz;
-
-
+	float matrix[16];		// transformation matrix
+	Quaternion *qX;
+	Quaternion *qY;
+	float degreesX;
+	float degreesY;
 
 	public:
 
@@ -30,12 +36,16 @@ class Bird : public Entity {
 			float volZ, float colorR, float colorG, float colorB);
 		virtual ~Bird();
 
-		Vector<float> *getVel();
-
 		void updateMatrix();
-		void xRotate();
-		void yRotate();
+		void updatePosition();
+		void updateVelocity(float vel);
+		void rotateX(float degrees);
+		void rotateY(float degrees);
+
 		float *getMatrix();
+		Vector<float> *getDir();
+		float getDegreesX();
+		float getDegreesY();
 
 };
 

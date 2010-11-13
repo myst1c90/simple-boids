@@ -9,72 +9,136 @@
 
 Bird::Bird(Vector<float> *initPos, Vector<float> *vol, Color *color) :
 	Entity(initPos, vol, color) {
-	this->vel = new Vector<float>();
-
-	qx.s = 1.0f; qx.vx = 1.0f; qx.vy = 0.0f; qx.vz = 0.0f;
-	qy.s = 1.0f; qy.vx = 0.0f; qy.vy = 1.0f; qy.vz = 0.0f;
-	qz.s = 1.0f; qz.vx = 0.0f; qz.vy = 0.0f; qz.vz = 1.0f;
-	updateMatrix();
+	dir = new Vector<float>();
+	qX = new Quaternion();
+	qY = new Quaternion();
+	degreesX = DEGREESX_DEFAULT_VALUE;
+	degreesY = DEGREESY_DEFAULT_VALUE;
+	vel = 0;
 }
 
 Bird::Bird(float posX, float posY, float posZ, float volX, float volY,
 		float volZ, float colorR, float colorG, float colorB) :
 		Entity(posX, posY, posZ, volX, volY, volZ, colorR, colorG, colorB) {
-	this->vel = new Vector<float>();
+	dir = new Vector<float>();
+	qX = new Quaternion();
+	qY = new Quaternion();
+	degreesX = DEGREESX_DEFAULT_VALUE;
+	degreesY = DEGREESY_DEFAULT_VALUE;
+	vel = 0;
 }
 
 Bird::~Bird() {
 	this->~Entity();
-	delete(vel);
-}
-
-Vector<float> *Bird::getVel() {
-	return vel;
+	delete(dir);
 }
 
 void Bird::updateMatrix() {
-	matrix[0] = qx.vx;
-	matrix[1] = qx.vy;
-	matrix[2] = qx.vz;
-	matrix[3] = 0;
+	Quaternion q;
 
-	matrix[4] = qy.vx;
-	matrix[5] = qy.vy;
-	matrix[6] = qy.vz;
-	matrix[7] = 0;
+	// generate the quaternions that will represent the rotations
+	qX->createFromAxisAngle(1.0f, 0.0f, 0.0f, degreesX);
+	qY->createFromAxisAngle(0.0f, 1.0f, 0.0f, degreesY);
+	Quaternion qz;
 
-	matrix[8] = qz.vx;
-	matrix[9] = qz.vy;
-	matrix[10] = qz.vz;
-	matrix[11] = 0;
-
-	matrix[12] = 0;
-	matrix[13] = 0;
-	matrix[14] = 0;
-	matrix[15] = 1;
+	// combine the x and y rotations
+	q = (*qX) * (*qY);
+	q.createMatrix(matrix);
 }
 
-void Bird::xRotate() {
-	quat_rot_t rot;
-	rot.theta = 20;
-	rot.nx = 1;
-	rot.ny = 0;
-	rot.nz = 1;
-	quat_pos_t p = quatRotate(quatToPosition(qx), rot);
-	qx = quatFromPosition(p);
+void Bird::updatePosition() {
+	Quaternion q;
+
+	// create a matrix from the x quaternion and get the j vector
+	qX->createMatrix(matrix);
+	dir->setY(matrix[9]);
+
+	// combine the y and x rotations
+	q = (*qY) * (*qX);
+	q.createMatrix(matrix);
+
+	// get the i and k vector
+	dir->setX(matrix[8]);
+	dir->setZ(matrix[10]);
+
+	// scale the direction by our speed.
+	(*dir) *= vel;
+
+	// increment position by the direction vector
+	(*pos) += (*dir);
+
 }
 
-void Bird::yRotate() {
-	quat_rot_t rot;
-	rot.theta = 20;
-	rot.nx = 1;
-	rot.ny = 0;
-	rot.nz = 0;
-	quat_pos_t p = quatRotate(quatToPosition(qy), rot);
-	qy = quatFromPosition(p);
+void Bird::rotateX(float degrees) {
+	if(fabs(degrees) < fabs(MAX_DEGREESX)) {
+		degreesX += degrees;
+	}
+	else {
+		if(degrees < 0)	{
+			degreesX -= MAX_DEGREESX;
+		}
+		else {
+			degreesX += MAX_DEGREESX;
+		}
+	}
+
+	if(degreesX > 360.0f) {
+		degreesX -= 360.0f;
+	}
+	else if(degreesX < -360.0f) {
+		degreesX += 360.0f;
+	}
+}
+
+void Bird::rotateY(float degrees) {
+	if(fabs(degrees) < fabs(MAX_DEGREESY)) {
+		degreesY += degrees;
+	}
+	else {
+		if(degrees < 0)	{
+			degreesY -= MAX_DEGREESY;
+		}
+		else {
+			degreesY += MAX_DEGREESY;
+		}
+	}
+
+	if(degreesY > 360.0f) {
+		degreesY -= 360.0f;
+	}
+	else if(degreesY < -360.0f) {
+		degreesY += 360.0f;
+	}
+}
+
+void Bird::updateVelocity(float vel) {
+//	this->vel = vel;
+//	return;
+	if(fabs(vel) < fabs(MAX_VELOCITY)) {
+			this->vel += vel;
+	}
+	else {
+		if(vel < 0)	{
+			this->vel -= MAX_VELOCITY;
+		}
+		else {
+			this->vel += MAX_VELOCITY;
+		}
+	}
 }
 
 float *Bird::getMatrix() {
 	return matrix;
 }
 
+Vector<float> *Bird::getDir() {
+	return dir;
+}
+
+float Bird::getDegreesX() {
+	return degreesX;
+}
+
+float Bird::getDegreesY() {
+	return degreesY;
+}

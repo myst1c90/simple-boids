@@ -14,9 +14,10 @@
 
 class Entity {
 
-	Vector<float> *pos;		// position
-	Vector<float> *vol;		// volume
-	Color *color;			// RGB color
+	protected:
+		Vector<float> *pos;		// position
+		Vector<float> *vol;		// volume
+		Color *color;			// RGB color
 
 	public:
 
