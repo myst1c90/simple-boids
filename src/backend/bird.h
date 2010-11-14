@@ -59,6 +59,7 @@ class Bird : public Entity {
 		float getDegreesX();
 		float getDegreesY();
 		float getWingPos();
+		void setVel(float vel);
 
 };
 

@@ -11,7 +11,8 @@
 GLEntities::GLEntities() {
 	mainBird = new Bird(new Vector<float>(0.0, -1.0, 1.0),
 			new Vector<float>(0.00f, 0.5f, 0.0f),
-			new Color(0.3, 0.7, 0.0));
+			new Color(0.3, 0.5, 0.0));
+
 
 	camera = new Camera(0.0, 1.0, 5.0, 0.0, 0.0, -4.0, 0.0, 0.0, -1.0);
 
@@ -22,7 +23,7 @@ GLEntities::GLEntities() {
 				new Color(1.0, 0.0, 0.0));
 	boids->addBoid(bird2);
 
-	tower = new Entity(0.0f,-0.2f,0.0f, 0.6, 1.8, 50, 0.2, 0.2, 0.2);
+	tower = new Entity(0.0f,-0.2f,0.0f, 0.6, 1.8, 50, 0.4, 0.4, 0.4);
 }
 
 GLEntities::~GLEntities() {

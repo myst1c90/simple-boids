@@ -160,3 +160,7 @@ float Bird::getDegreesY() {
 float Bird::getWingPos() {
 	return wingPos;
 }
+
+void Bird::setVel(float vel) {
+	this->vel = vel;
+}

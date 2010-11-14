@@ -52,6 +52,18 @@ void init(void) {
 	TEXTURES[3] = new GLTexture("frontend/images/YP.bmp");
 	TEXTURES[4] = new GLTexture("frontend/images/ZN.bmp");
 	TEXTURES[5] = new GLTexture("frontend/images/ZP.bmp");
+
+    // enable light
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
+	glEnable ( GL_COLOR_MATERIAL );
 }
 
 void changeSize(GLsizei w, GLsizei h) {
@@ -128,7 +140,6 @@ void renderScene() {
 	bird2->updateWingPos();
 	ENTITIES->drawBird(bird2);
 	glPopMatrix();
-
 ///////////////////////
 
 
@@ -149,6 +160,7 @@ void drawText(float x, float y, char *string, void *font)
 
 void renderSkybox(Vector<float> *position, Vector<float> *size)
 {
+	glDisable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 
 	// begin DrawSkybox
@@ -216,6 +228,7 @@ void renderSkybox(Vector<float> *position, Vector<float> *size)
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
 };
 
 /**
@@ -244,18 +257,22 @@ void processSpecialKeys(int key, int x, int y) {
 void processNormalKeys(unsigned char key, int x, int y) {
 	Bird *bird = ENTITIES->getMainBird();
 
-	switch(key) {
-		case 'Q':
-		case 'q':
-			exit(0);
-		case 'E':
-		case 'e':
-			bird->updateVelocity(0.001);
-			break;
-		case 'W':
-		case 'w':
-			bird->updateVelocity(-0.001);
-			break;
+	switch (key) {
+	case 'Q':
+	case 'q':
+		exit(0);
+	case 'E':
+	case 'e':
+		bird->updateVelocity(0.001);
+		break;
+	case 'W':
+	case 'w':
+		bird->updateVelocity(-0.001);
+		break;
+	case 'P':
+	case 'p':
+		bird->setVel(0.0f);
+		break;
 	}
 }
 
