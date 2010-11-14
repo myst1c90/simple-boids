@@ -15,7 +15,8 @@
 #define		DEGREESY_DEFAULT_VALUE		0.0
 #define		MAX_DEGREESX				5.0
 #define		MAX_DEGREESY				5.0
-#define		MAX_VELOCITY				5.0
+#define		MAX_VELOCITY				1.0
+#define		MIN_VELOCITY				0.0
 
 
 class Bird : public Entity {

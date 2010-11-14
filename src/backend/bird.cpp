@@ -59,7 +59,7 @@ void Bird::updatePosition() {
 
 	// get the i and k vector
 	dir->setX(matrix[8]);
-	dir->setZ(matrix[10]);
+	dir->setZ(-matrix[10]);
 
 	// scale the direction by our speed.
 	(*dir) *= vel;
@@ -112,18 +112,13 @@ void Bird::rotateY(float degrees) {
 }
 
 void Bird::updateVelocity(float vel) {
-//	this->vel = vel;
-//	return;
-	if(fabs(vel) < fabs(MAX_VELOCITY)) {
-			this->vel += vel;
+	this->vel += vel;
+
+	if(this->vel > MAX_VELOCITY) {
+		this->vel = MAX_VELOCITY;
 	}
-	else {
-		if(vel < 0)	{
-			this->vel -= MAX_VELOCITY;
-		}
-		else {
-			this->vel += MAX_VELOCITY;
-		}
+	else if(this->vel < MIN_VELOCITY) {
+		this->vel = MIN_VELOCITY;
 	}
 }
 

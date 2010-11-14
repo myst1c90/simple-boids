@@ -165,8 +165,8 @@ void renderScene() {
 	Bird *bird = (*boids)[0];
 	bird->updateMatrix();
 	// Translate to our new position.
-		bird->updatePosition();
-		glTranslatef(-bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ());
+	bird->updatePosition();
+	glTranslatef(-bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ());
 
 	glMultMatrixf(bird->getMatrix());
 
@@ -175,7 +175,7 @@ void renderScene() {
 	printf("degree: (%f, %f)\n\n", bird->getDegreesX(), bird->getDegreesY());
 
 	// draw bird
-	ENTITIES->drawBird();
+	ENTITIES->drawBird(WING_POS);
 
 	glPopMatrix();
 
@@ -184,8 +184,21 @@ void renderScene() {
 
 	rtri+=2.0;
 	rquad=rquad-0.9f;
-	//roll-=0.005f;		// Roll the clouds
-	//printf("%f\n", roll);
+
+	if(WING_POS <= -0.015) {
+		WING_POS = -0.015;
+		WING_DIR = true;
+	}
+	if(WING_POS >= 0.015) {
+		WING_POS = 0.015;
+		WING_DIR = false;
+	}
+	if(WING_DIR) {
+		WING_POS += 0.002;
+	}
+	else {
+		WING_POS -= 0.002;
+	}
 }
 
 
@@ -228,18 +241,18 @@ void processNormalKeys(unsigned char key, int x, int y) {
 			break;
 		case 'A':
 		case 'a':
-			bird->rotateY(-5.0);
+			bird->rotateY(5.0);
 			break;
 		case 'D':
 		case 'd':
-			bird->rotateY(5.0);
+			bird->rotateY(-5.0);
 			break;
-		case 'i':
-		case 'I':
+		case 'p':
+		case 'P':
 			bird->updateVelocity(0.001);
 			break;
-		case 'k':
-		case 'K':
+		case 'O':
+		case 'o':
 			bird->updateVelocity(-0.001);
 			break;
 	}
@@ -259,6 +272,8 @@ void processMouse(int button, int state, int x, int y) {
 void processMousePassiveMotion(int x, int y) {
 	mouseX = x;
 	mouseY = y;
+	std::vector<Bird *> *boids = ENTITIES->getBoids()->getBoids();
+	Bird *bird = (*boids)[0];
 }
 
 void processMouseEntry(int state) {

@@ -29,7 +29,7 @@ class GLEntities {
 		virtual ~GLEntities();
 
 		// draw functions
-		void drawBird();
+		void drawBird(float wingPos);
 
 		Boids *getBoids();
 };

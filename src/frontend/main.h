@@ -33,6 +33,8 @@ GLEntities *ENTITIES;
 bool	KEYS[256];
 bool	ACTIVE = true;
 GLTexture *BACKGROUND[2];
+float WING_POS;
+bool WING_DIR;
 GLfloat roll;			// Rolling clouds
 GLfloat		rtri = 0.0;						// Angle For The Triangle
 GLfloat		rquad = 0.0;						// Angle For The Quad
