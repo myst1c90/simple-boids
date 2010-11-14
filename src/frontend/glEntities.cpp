@@ -9,8 +9,8 @@
 
 
 GLEntities::GLEntities() {
-	Bird *bird = new Bird(new Vector<float>(0.0, 0.0, 0.0),
-			new Vector<float>(0.00f, 0.14f, 0.02f),
+	Bird *bird = new Bird(new Vector<float>(0.0, -0.5, 0.5),
+			new Vector<float>(0.00f, 0.5f, 0.0f),
 			new Color(0.0, 0.0, 1.0));
 
 	boids = new Boids();
@@ -33,9 +33,6 @@ void GLEntities::drawBird(float wingPos) {
 
 	double size = 0.02f;
 	double bsize = size*7;
-	double tsize = size;
-	double wsize = bsize+0.1*bsize;
-	double wlevel = 0;
 
 	float radius = 0.05;
 
@@ -109,3 +106,5 @@ void GLEntities::drawBird(float wingPos) {
 
 	glPopMatrix();
 }
+
+

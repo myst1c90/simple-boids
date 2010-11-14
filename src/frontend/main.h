@@ -32,7 +32,7 @@
 GLEntities *ENTITIES;
 bool	KEYS[256];
 bool	ACTIVE = true;
-GLTexture *BACKGROUND[2];
+GLTexture *BACKGROUND[6];
 float WING_POS;
 bool WING_DIR;
 GLfloat roll;			// Rolling clouds
@@ -57,5 +57,6 @@ void processMousePassiveMotion(int x, int y);
 void processMouseEntry(int state);
 
 void drawBackground();
+void renderSkybox(Vector<float> *position, Vector<float> *size);
 
 #endif /* MAIN_H_ */
