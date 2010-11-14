@@ -13,15 +13,17 @@
 #include <vector>
 
 #include "../backend/boids.h"
+#include "../backend/camera.h"
 
 
 class GLEntities {
 
-	Boids *boids;
+	Boids *boids;		// boids (group of birds)
+	Bird *mainBird;		// main (objective) bird
 
-	Entity *tower;
+	Camera *camera;		// view camera
+	Entity *tower;		// tower
 
-	//TODO terrain
 
 	public:
 
@@ -29,9 +31,13 @@ class GLEntities {
 		virtual ~GLEntities();
 
 		// draw functions
-		void drawBird(float wingPos);
+		void drawBird(Bird *bird);
+		void drawTower();
 
 		Boids *getBoids();
+		Bird *getMainBird();
+		Camera *getCamera();
+
 };
 
 #endif /* GLENTITIES_H_ */

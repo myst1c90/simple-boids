@@ -24,7 +24,7 @@ void Quaternion::createFromAxisAngle(float x, float y, float z, float degrees) {
 	// calculate the sin( theta / 2) once for optimization
 	float result = (float) sin(angle / 2.0f);
 
-	// calcualte the w value by cos( theta / 2 )
+	// calculate the w value by cos( theta / 2 )
 	m_w = (float) cos(angle / 2.0f);
 
 	// calculate the x, y and z of the quaternion

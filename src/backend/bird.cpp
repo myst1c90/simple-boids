@@ -15,6 +15,9 @@ Bird::Bird(Vector<float> *initPos, Vector<float> *vol, Color *color) :
 	degreesX = DEGREESX_DEFAULT_VALUE;
 	degreesY = DEGREESY_DEFAULT_VALUE;
 	vel = 0;
+	srand ( time(NULL) );
+	wingPos =  (rand() % 10)/100;
+	wingDir = (rand() % 2);
 }
 
 Bird::Bird(float posX, float posY, float posZ, float volX, float volY,
@@ -66,7 +69,6 @@ void Bird::updatePosition() {
 
 	// increment position by the direction vector
 	(*pos) += (*dir);
-
 }
 
 void Bird::rotateX(float degrees) {
@@ -122,6 +124,23 @@ void Bird::updateVelocity(float vel) {
 	}
 }
 
+void Bird::updateWingPos() {
+	if(wingPos <= -MAX_WING_POS) {
+		wingPos = -MAX_WING_POS;
+		wingDir = true;
+	}
+	if(wingPos >= MAX_WING_POS) {
+		wingPos = MAX_WING_POS;
+		wingDir = false;
+	}
+	if(wingDir) {
+		wingPos += WING_VEL + vel/2.0;
+	}
+	else {
+		wingPos -= WING_VEL + vel/2.0;
+	}
+}
+
 float *Bird::getMatrix() {
 	return matrix;
 }
@@ -136,4 +155,8 @@ float Bird::getDegreesX() {
 
 float Bird::getDegreesY() {
 	return degreesY;
+}
+
+float Bird::getWingPos() {
+	return wingPos;
 }

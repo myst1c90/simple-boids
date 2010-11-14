@@ -4,8 +4,8 @@ FLAGS = -Wall
 CC = gcc
 CPP = g++
 
-all: quat.o vector.h color.o entity.o bird.o boids.o color.o vector.h image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o glEntities.o main.o
-	$(CPP) backend/quat/quat.o backend/color.o backend/entity.o backend/bird.o backend/boids.o \
+all: quaternion.o vector.h color.o camera.o entity.o bird.o boids.o color.o vector.h image_DXT.o image_helper.o SOIL.o stb_image_aug.o glTexture.o glEntities.o main.o
+	$(CPP) backend/quaternion.o backend/color.o backend/camera.o backend/entity.o backend/bird.o backend/boids.o \
 		frontend/stb_image_aug.o frontend/image_helper.o frontend/image_DXT.o frontend/SOIL.o frontend/glTexture.o frontend/glEntities.o \
 		frontend/main.o \
 		$(FLAGS) $(LIBS) -o $(TARGET)
@@ -19,13 +19,16 @@ main.o: frontend/main.h frontend/main.cpp
 
 # 	BACKEND
 
-quat.o: backend/quat/quaternion.h backend/quat/quaternion.cpp
-	$(CPP) -c $(FLAGS) backend/quat/quaternion.cpp -o backend/quat/quat.o
+quaternion.o: backend/quaternion.h backend/quaternion.cpp
+	$(CPP) -c $(FLAGS) backend/quaternion.cpp -o backend/quaternion.o
 
 vector.h: backend/vector.h
 	
 color.o: backend/color.h backend/color.cpp
 	$(CPP) -c $(FLAGS) backend/color.cpp -o backend/color.o
+
+camera.o: backend/camera.h backend/camera.cpp
+	$(CPP) -c $(FLAGS) backend/camera.cpp -o backend/camera.o
 
 entity.o: backend/entity.h backend/entity.cpp
 	$(CPP) -c $(FLAGS) backend/entity.cpp -o backend/entity.o

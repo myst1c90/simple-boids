@@ -8,8 +8,12 @@
 #ifndef BIRD_H_
 #define BIRD_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "entity.h"
-#include "quat/quaternion.h"
+#include "quaternion.h"
 
 #define		DEGREESX_DEFAULT_VALUE		0.0
 #define		DEGREESY_DEFAULT_VALUE		0.0
@@ -17,6 +21,8 @@
 #define		MAX_DEGREESY				5.0
 #define		MAX_VELOCITY				1.0
 #define		MIN_VELOCITY				0.0
+#define		MAX_WING_POS				0.015
+#define		WING_VEL					0.002
 
 
 class Bird : public Entity {
@@ -30,6 +36,10 @@ class Bird : public Entity {
 	float degreesX;
 	float degreesY;
 
+	float wingPos;
+	bool wingDir;
+
+
 	public:
 
 		Bird(Vector<float> *initPos, Vector<float> *vol, Color *color);
@@ -39,6 +49,7 @@ class Bird : public Entity {
 
 		void updateMatrix();
 		void updatePosition();
+		void updateWingPos();
 		void updateVelocity(float vel);
 		void rotateX(float degrees);
 		void rotateY(float degrees);
@@ -47,6 +58,7 @@ class Bird : public Entity {
 		Vector<float> *getDir();
 		float getDegreesX();
 		float getDegreesY();
+		float getWingPos();
 
 };
 

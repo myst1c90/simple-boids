@@ -43,9 +43,9 @@ void init(void) {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	// load textures
-	BACKGROUND[0] = new GLTexture("frontend/images/Sky.tga");
+	TEXTURES[0] = new GLTexture("frontend/images/Sky.tga");
 	//BACKGROUND[1] = new GLTexture("images/Ground.tga");
-	BACKGROUND[1] = new GLTexture("frontend/images/Ground.tga");
+	TEXTURES[1] = new GLTexture("frontend/images/Ground.tga");
 }
 
 
@@ -190,7 +190,7 @@ void drawText(float x, float y, char *string, void *font)
 void drawBackground() {
 	glColor3f(1.0, 1.0, 1.0);
 	glEnable(GL_TEXTURE_2D);
-	BACKGROUND[0]->drawEntire(-1.5, 1.5, 1.5, -1.5);
+	TEXTURES[0]->drawEntire(-1.5, 1.5, 1.5, -1.5);
 	glDisable(GL_TEXTURE_2D);
 }
 

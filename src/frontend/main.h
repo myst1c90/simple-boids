@@ -30,19 +30,9 @@
 
 // variables
 GLEntities *ENTITIES;
-bool	KEYS[256];
-bool	ACTIVE = true;
-GLTexture *BACKGROUND[6];
-float WING_POS;
-bool WING_DIR;
-GLfloat roll;			// Rolling clouds
-GLfloat		rtri = 0.0;						// Angle For The Triangle
-GLfloat		rquad = 0.0;						// Angle For The Quad
-GLfloat		xrot;								// X Rotation ( NEW )
-GLfloat		yrot;								// Y Rotation ( NEW )
-GLfloat		zrot;								// Z Rotation ( NEW )
-GLfloat 	mouseX, mouseY;
-float		vel;
+GLTexture *TEXTURES[6];
+
+
 
 // prototypes
 int main(int argc, char** argv);
@@ -51,12 +41,14 @@ void changeSize(GLsizei w, GLsizei h);
 
 void drawScene(int i);
 void renderScene();
+void renderSkybox(Vector<float> *position, Vector<float> *size);
+
 void processNormalKeys(unsigned char key, int x, int y);
 void processMouse(int button, int state, int x, int y);
 void processMousePassiveMotion(int x, int y);
 void processMouseEntry(int state);
+void processSpecialKeys(int key, int x, int y);
 
-void drawBackground();
-void renderSkybox(Vector<float> *position, Vector<float> *size);
+
 
 #endif /* MAIN_H_ */

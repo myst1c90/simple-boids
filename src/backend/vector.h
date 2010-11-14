@@ -10,8 +10,8 @@
 #include <map>
 #include <math.h>
 
-#define TOL 0.000000000000001f          // float type tolerance 
-#define PI  3.14159265358979323846f     // value of PI
+#define		TOL 0.000000000000001f          // float type tolerance
+#define		PI  3.14159265358979323846     	// value of PI
 
 
 template <typename T> struct Vector
