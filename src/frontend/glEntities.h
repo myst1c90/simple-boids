@@ -37,6 +37,7 @@ class GLEntities {
 		Boids *getBoids();
 		Bird *getMainBird();
 		Camera *getCamera();
+		Entity *getTower();
 
 };
 

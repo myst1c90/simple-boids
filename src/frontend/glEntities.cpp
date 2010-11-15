@@ -42,6 +42,10 @@ Camera *GLEntities::getCamera() {
 	return camera;
 }
 
+Entity *GLEntities::getTower() {
+	return tower;
+}
+
 /**
  * draw functions
  */

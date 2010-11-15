@@ -87,18 +87,28 @@ void drawScene(int i) {
 }
 
 void renderScene() {
+	Bird *bird = ENTITIES->getMainBird();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
 	glLoadIdentity();
 
 	Camera *camera = ENTITIES->getCamera();
+	camera->set(ENTITIES->getTower()->getPos()->getX(), ENTITIES->getTower()->getVol()->getY(), ENTITIES->getTower()->getPos()->getZ(),
+			-bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ(), 0.0, 1.0, 0.0);
+
+	/*camera->set(-bird->getPos()->getX() - bird->getDir()->getX() * 10,
+			-bird->getPos()->getY() - bird->getDir()->getY() * 10,
+			bird->getPos()->getZ() - bird->getDir()->getZ() * 10,
+			-bird->getPos()->getX(), -bird->getPos()->getY(),
+			bird->getPos()->getZ(), 0.0, 1.0, 0.0);*/
 	gluLookAt(camera->getEyeX(), camera->getEyeY(), camera->getEyeZ(),
 			camera->getCenterX(), camera->getCenterY(), camera->getCenterZ(),
 			camera->getUpX(), camera->getUpY(), camera->getUpZ());
 
 	// Draw world
 	Vector<float> *camPos = new Vector<float>(0.0, 0.0, 0.0);
-	Vector<float> *size = new Vector<float>(60, 60, 60);
+	Vector<float> *size = new Vector<float>(50, 50, 50);
 	renderSkybox(camPos, size);
 
 	// Draw Tower
@@ -106,7 +116,6 @@ void renderScene() {
 
 	glPushMatrix();
 
-	Bird *bird = ENTITIES->getMainBird();
 	bird->updateMatrix();
 	bird->updatePosition();
 	if(-bird->getPos()->getY() < 0.0) {
