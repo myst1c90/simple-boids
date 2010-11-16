@@ -9,19 +9,23 @@
 
 
 GLEntities::GLEntities() {
-	mainBird = new Bird(new Vector<float>(0.0, -1.0, 1.0),
+	Bird *mainBird = new Bird(new Vector<float>(0.0, -1.0, 1.0),
 			new Vector<float>(0.00f, 0.5f, 0.0f),
 			new Color(0.3, 0.5, 0.0));
-
 
 	camera = new Camera(0.0, 1.0, 5.0, 0.0, 0.0, -4.0, 0.0, 0.0, -1.0);
 
 	boids = new Boids();
+	boids->addBoid(mainBird);
 
-	Bird *bird2 = new Bird(new Vector<float>(0.0, -0.3, 1.0),
-				new Vector<float>(0.00f, 0.5f, 0.0f),
-				new Color(1.0, 0.0, 0.0));
-	boids->addBoid(bird2);
+	////////////////
+	for(int i=0; i<10; i++) {
+		Bird *bird2 = new Bird(new Vector<float>(6.0, -0.3, i/2.0),
+								new Vector<float>(0.00f, 0.5f, 0.0f),
+								new Color(1.0, 0.0, 0.0));
+		boids->addBoid(bird2);
+	}
+	///////////////
 
 	tower = new Entity(0.0f,-0.2f,0.0f, 0.6, 1.8, 50, 0.4, 0.4, 0.4);
 }
@@ -35,7 +39,7 @@ Boids *GLEntities::getBoids() {
 }
 
 Bird *GLEntities::getMainBird() {
-	return mainBird;
+	return (*boids->getBoids())[0];
 }
 
 Camera *GLEntities::getCamera() {
@@ -53,15 +57,15 @@ Entity *GLEntities::getTower() {
 void GLEntities::drawBird(Bird *bird) {
 	float wingPos = bird->getWingPos();
 
-	float radius = 0.05;
+	float radius = 0.03;
 
 	glColor3f(bird->getColor()->getR(), bird->getColor()->getG(),
 			bird->getColor()->getB());
 	glutSolidSphere(radius, 100, 100);
 
-	glColor3f(1.7, 1.7, 0.0);
 	glBegin(GL_TRIANGLES);
 		// beak
+		glColor3f(1.0, 1.0, 0.0);
 		glVertex3f( 0.0f, 0.0f, -(radius+0.03));
 		glVertex3f(radius/1.5,radius/1.5, 0.0f);
 		glVertex3f( -radius/1.5,radius/1.5, 0.0f);
@@ -115,14 +119,14 @@ void GLEntities::drawBird(Bird *bird) {
 
 	// eyes
 	glColor3f(1.0, 1.0, 1.0);
-	glTranslatef(0.013f, 0.02f, -radius+0.005);
+	glTranslatef(0.01f, 0.02f, -radius+0.005);
 	glutSolidSphere(0.008, 100, 100);
-	glTranslatef(-0.026f, 0.00f, 0);
+	glTranslatef(-0.02f, 0.00f, 0);
 	glutSolidSphere(0.008, 100, 100);
 	glColor3f(0.0, 0.0, 0.0);
 	glTranslatef(0.00f, 0.00f, -0.004);
 	glutSolidSphere(0.005, 100, 100);
-	glTranslatef(0.026f, 0.00f, 0.0);
+	glTranslatef(0.02f, 0.00f, 0.0);
 	glutSolidSphere(0.005, 100, 100);
 }
 

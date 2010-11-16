@@ -94,8 +94,13 @@ void renderScene() {
 	glLoadIdentity();
 
 	Camera *camera = ENTITIES->getCamera();
+	if(!CAM) {
+		camera->set(0.0, 1.0, 8.0, -bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ(), 0.0, 1.0, 0.0);
+	}
+	else {
 	camera->set(ENTITIES->getTower()->getPos()->getX(), ENTITIES->getTower()->getVol()->getY(), ENTITIES->getTower()->getPos()->getZ(),
 			-bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ(), 0.0, 1.0, 0.0);
+	}
 
 	/*camera->set(-bird->getPos()->getX() - bird->getDir()->getX() * 10,
 			-bird->getPos()->getY() - bird->getDir()->getY() * 10,
@@ -125,9 +130,9 @@ void renderScene() {
 
 	glMultMatrixf(bird->getMatrix());
 
-	printf("pos: (%f, %f, %f)\n", -bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ());
-	printf("dir: (%f, %f, %f)\n", bird->getDir()->getX(), -bird->getDir()->getY(), bird->getDir()->getZ());
-	printf("degree: (%f, %f)\n\n", bird->getDegreesX(), bird->getDegreesY());
+//	printf("pos: (%f, %f, %f)\n", -bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ());
+//	printf("dir: (%f, %f, %f)\n", bird->getDir()->getX(), -bird->getDir()->getY(), bird->getDir()->getZ());
+//	printf("degree: (%f, %f)\n\n", bird->getDegreesX(), bird->getDegreesY());
 
 	// draw bird
 	bird->updateWingPos();
@@ -136,19 +141,24 @@ void renderScene() {
 	glPopMatrix();
 
 ///////////////////////
-	glPushMatrix();
 	std::vector<Bird *> *boids = ENTITIES->getBoids()->getBoids();
-	Bird *bird2 = (*boids)[0];
-	bird2->updateMatrix();
-	bird2->updatePosition();
-	if(-bird2->getPos()->getY() < 0.0) {
-		bird2->getPos()->setY(0.0);
+	for(int i=1; i<(*boids).size(); i++) {
+		Bird *bird2 = (*boids)[i];
+		glPushMatrix();
+		ENTITIES->getBoids()->updateBoidsPosition();
+	//	bird2->updateMatrix();
+	//	bird2->updatePosition();
+	//	if(-bird2->getPos()->getY() < 0.0) {
+	//		bird2->getPos()->setY(0.0);
+	//	}
+
+				//printf("rotate angle: %f\n",90 - angle);
+		glTranslatef(-bird2->getPos()->getX(), -bird2->getPos()->getY(), bird2->getPos()->getZ());
+	//	glMultMatrixf(bird2->getMatrix());
+		bird2->updateWingPos();
+		ENTITIES->drawBird(bird2);
+		glPopMatrix();
 	}
-	glTranslatef(-bird2->getPos()->getX(), -bird2->getPos()->getY(), bird2->getPos()->getZ());
-	glMultMatrixf(bird2->getMatrix());
-	bird2->updateWingPos();
-	ENTITIES->drawBird(bird2);
-	glPopMatrix();
 ///////////////////////
 
 
@@ -246,6 +256,7 @@ void renderSkybox(Vector<float> *position, Vector<float> *size)
 
 void processSpecialKeys(int key, int x, int y) {
 	Bird *bird = ENTITIES->getMainBird();
+	Camera *camera = ENTITIES->getCamera();
 
 	switch (key) {
 	case GLUT_KEY_LEFT:
@@ -260,6 +271,11 @@ void processSpecialKeys(int key, int x, int y) {
 	case GLUT_KEY_DOWN:
 		bird->rotateX(-5.0);
 		break;
+	case GLUT_KEY_F2:
+		CAM = 1;
+		break;
+	case GLUT_KEY_F1:
+		CAM = 0;
 	}
 }
 

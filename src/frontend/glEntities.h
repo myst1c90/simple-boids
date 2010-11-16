@@ -19,7 +19,6 @@
 class GLEntities {
 
 	Boids *boids;		// boids (group of birds)
-	Bird *mainBird;		// main (objective) bird
 
 	Camera *camera;		// view camera
 	Entity *tower;		// tower

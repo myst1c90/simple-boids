@@ -21,7 +21,7 @@
 #define		MAX_DEGREESY				5.0
 #define		MAX_VELOCITY				1.0
 #define		MIN_VELOCITY				0.0
-#define		MAX_WING_POS				0.015
+#define		MAX_WING_POS				0.02
 #define		WING_VEL					0.002
 
 

@@ -59,13 +59,13 @@ template <typename T> struct Vector
         return V.x * x + V.y * y + V.z * z;
     }
 
-    const Vector<T> &operator=(const Vector<T> &v) {   
+  /*  const Vector<T> &operator=(const Vector<T> &v) {
         x = v.x;
         y = v.y;
         z = v.z;
         return *this;
     }
-
+*/
     bool operator==(const Vector<T> &v) {
         return ( (x == v.x) && (y == v.y) && (z == v.z) );
     }
@@ -85,7 +85,7 @@ template <typename T> struct Vector
         return *this;
     }
 
-    Vector<T> operator-(const Vector<T> &v) const {   
+    Vector<T> operator-(const Vector<T> &v) const {
         return Vector<T>( x-v.x, y-v.y, z-v.z );
     }
 
@@ -115,8 +115,8 @@ template <typename T> struct Vector
         return Vector<T>(x/num, y/num, z/num);
     }       
 
-    float magnitude() const {   
-        return (float)sqrt(*this * *this);
+    float magnitude() const {
+    	return sqrt( x*x + y*y + z*z );
     }
 
     const Vector<T> unit() {

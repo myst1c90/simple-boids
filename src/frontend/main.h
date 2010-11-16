@@ -29,6 +29,7 @@
 #define WINDOW_INIT_HEIGHT          640
 
 // variables
+bool CAM;
 GLEntities *ENTITIES;
 GLTexture *TEXTURES[6];
 

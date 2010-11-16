@@ -125,19 +125,18 @@ void Bird::updateVelocity(float vel) {
 }
 
 void Bird::updateWingPos() {
+	if (wingDir) {
+		wingPos += WING_VEL + vel / 2.0;
+	} else {
+		wingPos -= WING_VEL + vel / 2.0;
+	}
 	if(wingPos <= -MAX_WING_POS) {
 		wingPos = -MAX_WING_POS;
 		wingDir = true;
 	}
-	if(wingPos >= MAX_WING_POS) {
+	else if(wingPos >= MAX_WING_POS) {
 		wingPos = MAX_WING_POS;
 		wingDir = false;
-	}
-	if(wingDir) {
-		wingPos += WING_VEL + vel/2.0;
-	}
-	else {
-		wingPos -= WING_VEL + vel/2.0;
 	}
 }
 
