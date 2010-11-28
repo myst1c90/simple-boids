@@ -13,9 +13,9 @@
 
 #include "bird.h"
 
-#define		COHESION_COEFF		100
-#define		SEPARATION_COEFF	0.3
-#define		ALIGNMENT_COEFF		60
+#define		COHESION_COEFF		120
+#define		SEPARATION_COEFF	0.15
+#define		ALIGNMENT_COEFF		70
 #define		MIN_DISTANCE		SEPARATION_COEFF
 
 class Boids {
@@ -27,7 +27,8 @@ class Boids {
 		Boids();
 		virtual ~Boids();
 
-		void addBoid(Bird *bird);
+		bool addBoid(Bird *bird);
+		void removeLastBoid();
 		std::vector<Bird *> *getBoids();
 
 		void updateBoidsPosition();

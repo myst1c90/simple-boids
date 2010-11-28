@@ -16,8 +16,21 @@ Boids::~Boids() {
 	delete(boids);
 }
 
-void Boids::addBoid(Bird *bird) {
+bool Boids::addBoid(Bird *bird) {
+	for(int i=0; i<boids->size(); i++) {
+		Bird *b_i = (*boids)[i];
+		Vector<float> distVec = *bird->getPos() - *b_i->getPos();
+		float dist = distVec.magnitude();
+		if(dist < 0.01) {
+			return false;
+		}
+	}
 	boids->push_back(bird);
+	return true;
+}
+
+void Boids::removeLastBoid() {
+	boids->pop_back();
 }
 
 std::vector<Bird *> *Boids::getBoids() {

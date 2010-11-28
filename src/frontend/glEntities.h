@@ -16,9 +16,12 @@
 #include "../backend/camera.h"
 
 
+#define 	MAX_BOID_DIST	5
+
+
 class GLEntities {
 
-	Boids *boids;		// boids (group of birds)
+	Boids *boids;		// boids (set of birds)
 
 	Camera *camera;		// view camera
 	Entity *tower;		// tower
@@ -32,6 +35,9 @@ class GLEntities {
 		// draw functions
 		void drawBird(Bird *bird);
 		void drawTower();
+
+		void addBoid();
+		void removeBoid();
 
 		Boids *getBoids();
 		Bird *getMainBird();

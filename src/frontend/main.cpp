@@ -298,6 +298,12 @@ void processNormalKeys(unsigned char key, int x, int y) {
 	case 'p':
 		bird->setVel(0.0f);
 		break;
+	case '+':
+		ENTITIES->addBoid();
+		break;
+	case '-':
+		ENTITIES->removeBoid();
+		break;
 	}
 }
 
