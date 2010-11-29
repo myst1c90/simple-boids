@@ -17,11 +17,11 @@ Boids::~Boids() {
 }
 
 bool Boids::addBoid(Bird *bird) {
-	for(int i=0; i<boids->size(); i++) {
+	for(unsigned int i=0; i<boids->size(); i++) {
 		Bird *b_i = (*boids)[i];
 		Vector<float> distVec = *bird->getPos() - *b_i->getPos();
 		float dist = distVec.magnitude();
-		if(dist < 0.01) {
+		if(dist < MIN_SPACE) {
 			return false;
 		}
 	}
@@ -40,7 +40,7 @@ std::vector<Bird *> *Boids::getBoids() {
 /*
  * Boids algorithms
  */
-void Boids::updateBoidsPosition() {
+void Boids::updateBoidsPosition(Entity *obstacle) {
 	int numBoids = boids->size();
 	Vector<float> newPosList1[numBoids];
 	Vector<float> newPosList2[numBoids];
@@ -60,7 +60,7 @@ void Boids::updateBoidsPosition() {
 		Vector<float> *newPos2 = &newPosList2[i];
 		Vector<float> *newPos3 = &newPosList3[i];
 
-		*b->getDir() += *newPos1 + *newPos2 + *newPos3;
+		*b->getDir() += *newPos1 + *newPos2 + *newPos3 + avoidObstacle(i, obstacle);
 		*b->getPos() += *b->getDir();
 		 b->setVel( (b->getDir())->magnitude()*10 );
 	}
@@ -88,7 +88,7 @@ Vector<float> Boids::rule1(int boidNum) {
 
 	if(numNeighbours != 0) {
 		center = center / numNeighbours;
-		center = (center - *b->getPos()) / COHESION_COEFF;
+		center = ( center - *b->getPos() ) / COHESION_COEFF;
 		return center;
 	}
 
@@ -129,8 +129,8 @@ Vector<float> Boids::rule3(int boidNum) {
 	for(int i=0; i<numBoids; i++) {
 		if(i!= boidNum)	{
 			Bird *b_i = (*boids)[i];
-			Vector<float> distVec = b->getPos() - b_i->getPos();
-			float dist = distVec.magnitude();
+			Vector<float> distVec = *b->getPos() - *b_i->getPos();
+//			float dist = distVec.magnitude();
 
 		//	if(dist <= MIN_DISTANCE) {
 				totalVel = totalVel - *b_i->getDir();
@@ -145,4 +145,31 @@ Vector<float> Boids::rule3(int boidNum) {
 	}
 
 	return Vector<float>(0.0, 0.0, 0.0);
+}
+
+Vector<float> Boids::avoidObstacle(int boidNum, Entity *obstacle) {
+
+	Vector<float> newVec(0.0,0.0,0.0);
+	Bird *b = (*boids)[boidNum];
+
+	Vector<float> *obstaclePos = obstacle->getPos();
+	float obstacleH = obstacle->getVol()->getY();
+	float obstacleR = obstacle->getVol()->getX();
+	float h = - b->getPos()->getY();
+	float r = ( obstacleR * (obstacleH - h) ) / obstacleH;
+
+	if( h > (obstacleH + MIN_SPACE) ) {
+		return newVec;
+	}
+
+	Vector<float> pos(obstaclePos->getX(), -h, obstaclePos->getZ());
+	Vector<float> distVec = *b->getPos() - pos;
+	distVec.setY(0.0);
+	float dist = distVec.magnitude();
+
+	if(dist < (r + MIN_SPACE) ) {
+		newVec = newVec - ( pos - *b->getPos() ) / OBSTACLE_AVOID_COEFF;
+	}
+
+	return newVec;
 }

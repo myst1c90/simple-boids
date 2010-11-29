@@ -95,7 +95,7 @@ void renderScene() {
 
 	Camera *camera = ENTITIES->getCamera();
 	if(!CAM) {
-		camera->set(0.0, 1.0, 8.0, -bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ(), 0.0, 1.0, 0.0);
+		camera->set(0.0, 5.0, 7.0, -bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ(), 0.0, 1.0, 0.0);
 	}
 	else {
 	camera->set(ENTITIES->getTower()->getPos()->getX(), ENTITIES->getTower()->getVol()->getY(), ENTITIES->getTower()->getPos()->getZ(),
@@ -145,7 +145,7 @@ void renderScene() {
 	for(int i=1; i<(*boids).size(); i++) {
 		Bird *bird2 = (*boids)[i];
 		glPushMatrix();
-		ENTITIES->getBoids()->updateBoidsPosition();
+		ENTITIES->getBoids()->updateBoidsPosition(ENTITIES->getTower());
 	//	bird2->updateMatrix();
 	//	bird2->updatePosition();
 	//	if(-bird2->getPos()->getY() < 0.0) {
