@@ -177,10 +177,10 @@ void renderGame() {
 }
 
 
-void drawText(float x, float y, char *string, void *font)
+void drawText(float x, float y, float z, char *string, void *font)
 {
 	int len, i;
-	glRasterPos2f(x, y);
+	glRasterPos3f(x, y, z);
 	len = (int) strlen(string);
 	for (i = 0; i < len; i++) {
 		glutBitmapCharacter(font, string[i]);

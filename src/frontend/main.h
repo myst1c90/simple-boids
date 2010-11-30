@@ -28,11 +28,19 @@
 #define WINDOW_INIT_WIDTH           820
 #define WINDOW_INIT_HEIGHT          640
 
+
+enum State {
+	RUNNING,
+	PAUSED,
+};
+
+
 // variables
 bool CAM;
+bool DEBUGGING;
+enum State STATE;
 GLEntities *ENTITIES;
 GLTexture *TEXTURES[6];
-
 
 
 // prototypes
@@ -49,6 +57,8 @@ void processMouse(int button, int state, int x, int y);
 void processMousePassiveMotion(int x, int y);
 void processMouseEntry(int state);
 void processSpecialKeys(int key, int x, int y);
+void drawText(float x, float y, float z, char *string, void *font);
+void debug();
 
 
 
