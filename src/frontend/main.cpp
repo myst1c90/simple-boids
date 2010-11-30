@@ -154,7 +154,7 @@ void renderScene() {
 
 				//printf("rotate angle: %f\n",90 - angle);
 		glTranslatef(-bird2->getPos()->getX(), -bird2->getPos()->getY(), bird2->getPos()->getZ());
-	//	glMultMatrixf(bird2->getMatrix());
+		glMultMatrixf(bird->getMatrix());
 		bird2->updateWingPos();
 		ENTITIES->drawBird(bird2);
 		glPopMatrix();

@@ -53,6 +53,7 @@ void Boids::updateBoidsPosition(Entity *obstacle) {
 		newPosList3[i] = rule3(i);
 	}
 
+
 	// apply the new positions
 	for(int i=1; i<numBoids; i++) {
 		Bird *b = (*boids)[i];
@@ -63,6 +64,7 @@ void Boids::updateBoidsPosition(Entity *obstacle) {
 		*b->getDir() += *newPos1 + *newPos2 + *newPos3 + avoidObstacle(i, obstacle);
 		*b->getPos() += *b->getDir();
 		 b->setVel( (b->getDir())->magnitude()*10 );
+
 	}
 }
 
