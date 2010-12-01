@@ -36,8 +36,9 @@ enum State {
 
 
 // variables
-bool CAM;
 bool DEBUGGING;
+float CAM_DIST;
+CameraType CAM_TYPE;
 enum State STATE;
 GLEntities *ENTITIES;
 GLTexture *TEXTURES[6];
@@ -59,7 +60,10 @@ void processMouseEntry(int state);
 void processSpecialKeys(int key, int x, int y);
 void drawText(float x, float y, float z, char *string, void *font);
 void debug();
+void updateCamera();
 
+void processMenuEvents(int option);
+void loadMenu();
 
 
 #endif /* MAIN_H_ */

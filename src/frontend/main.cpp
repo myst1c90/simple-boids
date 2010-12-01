@@ -56,6 +56,8 @@ void init(void) {
 
 	STATE = RUNNING;
 	DEBUGGING = false;
+	CAM_DIST = 5.0;
+	CAM_TYPE = F1;
 
     // enable light
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -69,7 +71,9 @@ void init(void) {
 	glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
 	glEnable ( GL_COLOR_MATERIAL );
 
-	glLineWidth(1);
+	glLineWidth(1.2);
+
+	loadMenu();
 }
 
 void changeSize(GLsizei w, GLsizei h) {
@@ -102,26 +106,15 @@ void renderScene() {
 	glPushMatrix();
 	glLoadIdentity();
 
+	updateCamera();
 	Camera *camera = ENTITIES->getCamera();
-	if(!CAM) {
-		camera->set(0.0, 1.0, 7.0, -bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ(), 0.0, 1.0, 0.0);
-	}
-	else {
-	camera->set(ENTITIES->getTower()->getPos()->getX(), ENTITIES->getTower()->getVol()->getY(), ENTITIES->getTower()->getPos()->getZ(),
-			-bird->getPos()->getX(), -bird->getPos()->getY(), bird->getPos()->getZ(), 0.0, 1.0, 0.0);
-	}
-	/*camera->set(-bird->getPos()->getX() - bird->getDir()->getX() * 10,
-			-bird->getPos()->getY() - bird->getDir()->getY() * 10,
-			bird->getPos()->getZ() - bird->getDir()->getZ() * 10,
-			-bird->getPos()->getX(), -bird->getPos()->getY(),
-			bird->getPos()->getZ(), 0.0, 1.0, 0.0);*/
 	gluLookAt(camera->getEyeX(), camera->getEyeY(), camera->getEyeZ(),
 			camera->getCenterX(), camera->getCenterY(), camera->getCenterZ(),
 			camera->getUpX(), camera->getUpY(), camera->getUpZ());
 
 	// draw world
 	Vector<float> *camPos = new Vector<float>(0.0, 0.0, 0.0);
-	Vector<float> *size = new Vector<float>(55, 55, 55);
+	Vector<float> *size = new Vector<float>(50, 50, 50);
 	renderSkybox(camPos, size);
 
 	// draw Tower
@@ -148,16 +141,15 @@ void renderScene() {
 
 	// draw boids
 	std::vector<Bird *> *boids = ENTITIES->getBoids()->getBoids();
+	if(STATE == RUNNING) {
+		ENTITIES->getBoids()->updateBoidsPosition(ENTITIES->getTower());
+	}
 	for(unsigned int i=1; i<(*boids).size(); i++) {
 		Bird *boid = (*boids)[i];
 
 		glPushMatrix();
 
-		if(STATE == RUNNING) {
-			ENTITIES->getBoids()->updateBoidsPosition(ENTITIES->getTower());
-			boid->updateWingPos();
-		}
-
+		boid->updateWingPos();
 		glTranslatef(-boid->getPos()->getX(), -boid->getPos()->getY(), boid->getPos()->getZ());
 		glMultMatrixf(bird->getMatrix());
 
@@ -174,7 +166,28 @@ void renderScene() {
 	glutSwapBuffers();
 }
 
+void updateCamera() {
+	Vector<float> *centerPos = ENTITIES->getBoids()->getCenterPos();
+	Camera *camera = ENTITIES->getCamera();
 
+	if(CAM_TYPE == F1) {
+		camera->set(ENTITIES->getTower()->getPos()->getX(), ENTITIES->getTower()->getVol()->getY(), ENTITIES->getTower()->getPos()->getZ(),
+								-centerPos->getX(), -centerPos->getY(), centerPos->getZ(), 0.0, 1.0, 0.0);
+	}
+	else if(CAM_TYPE == F2) {
+		camera->set(-centerPos->getX(),
+				-centerPos->getY(), centerPos->getZ()
+						+ CAM_DIST, -centerPos->getX(),
+				-centerPos->getY(), centerPos->getZ(), 0.0, 1.0, 0.0);
+	} else if(CAM_TYPE == F3) {
+
+		camera->set(centerPos->getX() + CAM_DIST,-centerPos->getY(), centerPos->getZ() ,
+				 -centerPos->getX(),-centerPos->getY(), centerPos->getZ(), 0.0, 1.0, 0.0
+		);
+	} else {
+		camera->set(0.0, 1.0, 7.0, -centerPos->getX(), -centerPos->getY(), centerPos->getZ(), 0.0, 1.0, 0.0);
+	}
+}
 
 void renderSkybox(Vector<float> *position, Vector<float> *size)
 {
@@ -255,7 +268,6 @@ void renderSkybox(Vector<float> *position, Vector<float> *size)
 
 void processSpecialKeys(int key, int x, int y) {
 	Bird *bird = ENTITIES->getMainBird();
-	Camera *camera = ENTITIES->getCamera();
 
 	switch (key) {
 	case GLUT_KEY_LEFT:
@@ -270,11 +282,22 @@ void processSpecialKeys(int key, int x, int y) {
 	case GLUT_KEY_DOWN:
 		bird->rotateX(-5.0);
 		break;
-	case GLUT_KEY_F2:
-		CAM = 1;
-		break;
 	case GLUT_KEY_F1:
-		CAM = 0;
+		CAM_TYPE = F1;
+		renderScene();
+		break;
+	case GLUT_KEY_F2:
+		CAM_TYPE = F2;
+		renderScene();
+		break;
+	case GLUT_KEY_F3:
+		CAM_TYPE = F3;
+		renderScene();
+		break;
+	case GLUT_KEY_F4:
+		CAM_TYPE = F4;
+		renderScene();
+		break;
 	}
 }
 
@@ -331,6 +354,16 @@ void processNormalKeys(unsigned char key, int x, int y) {
 			renderScene();
 		}
 		break;
+	case 'z':
+		if(CAM_DIST < 10.0) {
+			CAM_DIST += 0.2;
+		}
+		break;
+	case 'x':
+		if(CAM_DIST > 1.0) {
+			CAM_DIST -= 0.2;
+		}
+		break;
 	}
 }
 
@@ -338,10 +371,9 @@ void processMouse(int button, int state, int x, int y) {
 	if (state == GLUT_DOWN) {
 		if (button == GLUT_LEFT_BUTTON) {
 
-		}
-	} else if (button == GLUT_MIDDLE_BUTTON) {
-	} else {
+		} else if (button == GLUT_RIGHT_BUTTON) {
 
+		}
 	}
 }
 
@@ -383,5 +415,116 @@ void debug() {
 
 		sprintf(buffer, "%d", i);
 		drawText(-boid->getPos()->getX()-0.02, -boid->getPos()->getY()+0.1, boid->getPos()->getZ(), buffer, GLUT_BITMAP_HELVETICA_18);
+	}
+}
+
+/*
+ * Menu
+ */
+
+void loadMenu() {
+	int submenuC = glutCreateMenu(processMenuEvents);
+	glutAddMenuEntry("1",COHESION_1);
+	glutAddMenuEntry("2",COHESION_2);
+	glutAddMenuEntry("3",COHESION_3);
+	glutAddMenuEntry("4",COHESION_4);
+	glutAddMenuEntry("5",COHESION_5);
+
+	int submenuS = glutCreateMenu(processMenuEvents);
+	glutAddMenuEntry("1", SEPARATION_1);
+	glutAddMenuEntry("2", SEPARATION_2);
+	glutAddMenuEntry("3", SEPARATION_3);
+	glutAddMenuEntry("4", SEPARATION_4);
+	glutAddMenuEntry("5", SEPARATION_5);
+
+	int submenuA = glutCreateMenu(processMenuEvents);
+	glutAddMenuEntry("1", ALIGMENT_1);
+	glutAddMenuEntry("2", ALIGMENT_2);
+	glutAddMenuEntry("3", ALIGMENT_3);
+	glutAddMenuEntry("4", ALIGMENT_4);
+	glutAddMenuEntry("5", ALIGMENT_5);
+
+	int submenuO = glutCreateMenu(processMenuEvents);
+	glutAddMenuEntry("1", OBSTACLE_AVOID_1);
+	glutAddMenuEntry("2", OBSTACLE_AVOID_2);
+	glutAddMenuEntry("3", OBSTACLE_AVOID_3);
+	glutAddMenuEntry("4", OBSTACLE_AVOID_4);
+	glutAddMenuEntry("5", OBSTACLE_AVOID_5);
+
+	glutCreateMenu(processMenuEvents);
+	glutAddSubMenu("Cohesion",submenuC);
+	glutAddSubMenu("Separation",submenuS);
+	glutAddSubMenu("Aligment",submenuA);
+	glutAddSubMenu("Obstacle avoidance",submenuO);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+
+void processMenuEvents(int option) {
+	switch(option) {
+		case COHESION_1:
+			ENTITIES->getBoids()->setCohesionCoeff(3.0);
+			break;
+		case COHESION_2:
+			ENTITIES->getBoids()->setCohesionCoeff(2.2);
+			break;
+		case COHESION_3:
+			ENTITIES->getBoids()->setCohesionCoeff(1.6);
+			break;
+		case COHESION_4:
+			ENTITIES->getBoids()->setCohesionCoeff(0.7);
+			break;
+		case COHESION_5:
+			ENTITIES->getBoids()->setCohesionCoeff(0.08);
+			break;
+
+		case SEPARATION_1:
+			ENTITIES->getBoids()->setSeparationCoeff(0.1);
+			break;
+		case SEPARATION_2:
+			ENTITIES->getBoids()->setSeparationCoeff(0.3);
+			break;
+		case SEPARATION_3:
+			ENTITIES->getBoids()->setSeparationCoeff(0.5);
+			break;
+		case SEPARATION_4:
+			ENTITIES->getBoids()->setSeparationCoeff(0.8);
+			break;
+		case SEPARATION_5:
+			ENTITIES->getBoids()->setSeparationCoeff(1.2);
+			break;
+
+		case ALIGMENT_1:
+			ENTITIES->getBoids()->setAligmentCoeff(3.0);
+			break;
+		case ALIGMENT_2:
+			ENTITIES->getBoids()->setAligmentCoeff(2.2);
+			break;
+		case ALIGMENT_3:
+			ENTITIES->getBoids()->setAligmentCoeff(1.6);
+			break;
+		case ALIGMENT_4:
+			ENTITIES->getBoids()->setAligmentCoeff(0.8);
+			break;
+		case ALIGMENT_5:
+			ENTITIES->getBoids()->setAligmentCoeff(0.08);
+			break;
+
+		case OBSTACLE_AVOID_1:
+			ENTITIES->getBoids()->setObstacleAvoidCoeff(0.6);
+			break;
+		case OBSTACLE_AVOID_2:
+			ENTITIES->getBoids()->setObstacleAvoidCoeff(0.3);
+			break;
+		case OBSTACLE_AVOID_3:
+			ENTITIES->getBoids()->setObstacleAvoidCoeff(0.3);
+			break;
+		case OBSTACLE_AVOID_4:
+			ENTITIES->getBoids()->setObstacleAvoidCoeff(0.1);
+			break;
+		case OBSTACLE_AVOID_5:
+			ENTITIES->getBoids()->setObstacleAvoidCoeff(0.06);
+			break;
 	}
 }

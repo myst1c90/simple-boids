@@ -11,6 +11,14 @@
 #define CAMERA_H_
 
 
+enum CameraType {
+	F1,
+	F2,
+	F3,
+	F4
+};
+
+
 class Camera {
 
 	Vector<float> *eye;

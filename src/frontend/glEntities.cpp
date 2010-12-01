@@ -12,13 +12,13 @@ GLEntities::GLEntities() {
 	Bird *mainBird = new Bird(new Vector<float>(0.0, -1.0, 6.0),
 			new Vector<float>(0.00f, 0.5f, 0.0f),
 			new Color(0.3, 0.5, 0.0));
-
-	camera = new Camera(0.0, 2.0, 5.0, 0.0, 0.0, -4.0, 0.0, 0.0, -1.0);
-
 	boids = new Boids();
 	boids->addBoid(mainBird);
+	boids->getCenterPos()->set(mainBird->getPos()->getX(),
+			mainBird->getPos()->getY(), mainBird->getPos()->getZ());
 
-	tower = new Entity(0.0f,-0.2f,0.0f, 0.6, 5.0, 50, 0.4, 0.4, 0.4);
+	camera = new Camera(0.0, 2.0, 5.0, 0.0, 0.0, -4.0, 0.0, 0.0, -1.0);
+	tower = new Entity(0.0f,-0.2f,0.0f, 0.8, 5.0, 50, 0.4, 0.4, 0.4);
 }
 
 GLEntities::~GLEntities() {
@@ -141,7 +141,7 @@ void GLEntities::drawBird(Bird *bird) {
 
 	// eyes
 /*	glColor3f(1.0, 1.0, 1.0);
-	glTranslatef(0.01f, 0.02f, BIRD_EYE);
+	glTranslatef(0.01f, 0.02f, -BIRD_EYE);
 	glutSolidSphere(0.008, 100, 100);
 	glTranslatef(-0.02f, 0.00f, 0);
 	glutSolidSphere(0.008, 100, 100);
@@ -165,3 +165,4 @@ void GLEntities::drawTower() {
 
 	glPopMatrix();
 }
+
