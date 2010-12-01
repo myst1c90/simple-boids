@@ -13,9 +13,9 @@
 
 #include "bird.h"
 
-#define		COHESION_COEFF		120
+#define		COHESION_COEFF		220
 #define		SEPARATION_COEFF	0.15
-#define		ALIGNMENT_COEFF		70
+#define		ALIGNMENT_COEFF		50
 #define		MIN_DISTANCE		SEPARATION_COEFF
 #define		OBSTACLE_AVOID_COEFF		30
 #define		MIN_SPACE			0.01

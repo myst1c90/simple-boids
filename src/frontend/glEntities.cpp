@@ -61,13 +61,14 @@ void GLEntities::addBoid() {
 
 		newBoid->getPos()->set(x + mainBoid->getPos()->getX(), y + mainBoid->getPos()->getY(), z + mainBoid->getPos()->getZ());
 	} while(!boids->addBoid(newBoid));
-	printf("NEW BOID AT: (%f, %f, %f)\n", x, y, z, mainBoid->getPos()->getX(), mainBoid->getPos()->getY(), mainBoid->getPos()->getZ());
+
+	printf("NEW BOID AT: (%f, %f, %f)\tTOTAL: %d\n", x, y, z, boids->getBoids()->size());
 }
 
 void GLEntities::removeBoid() {
 	if(boids->getBoids()->size() > 1) {
 		boids->removeLastBoid();
-		printf("REMOVED BOID\n");
+		printf("REMOVED BOID\t\t\t\t\tTOTAL: %d\n", boids->getBoids()->size());
 	}
 }
 
@@ -86,60 +87,61 @@ void GLEntities::drawBird(Bird *bird) {
 	glBegin(GL_TRIANGLES);
 		// beak
 		glColor3f(1.0, 1.0, 0.0);
-		glVertex3f( 0.0f, 0.0f, -(radius+0.03));
-		glVertex3f(radius/1.5,radius/1.5, 0.0f);
-		glVertex3f( -radius/1.5,radius/1.5, 0.0f);
 
-		glVertex3f( 0.0f, 0.0f, -(radius+0.03));
-		glVertex3f(radius/1.5,-radius/1.5, 0.0f);
-		glVertex3f( -radius/1.5,-radius/1.5, 0.0f);
+		glVertex3f( 0.0f, 0.0f, BIRD_BEAK_A );
+		glVertex3f( BIRD_BEAK_B, BIRD_BEAK_B, 0.0f );
+		glVertex3f( -BIRD_BEAK_B, BIRD_BEAK_B, 0.0f );
 
-		glVertex3f( 0.0f, 0.0f, -(radius+0.03));
-		glVertex3f(radius/1.5,radius/1.5, 0.0f);
-		glVertex3f(radius/1.5,-radius/1.5, 0.0f);
+		glVertex3f( 0.0f, 0.0f, BIRD_BEAK_A );
+		glVertex3f( BIRD_BEAK_B, -BIRD_BEAK_B, 0.0f );
+		glVertex3f( -BIRD_BEAK_B, -BIRD_BEAK_B, 0.0f );
 
-		glVertex3f( 0.0f, 0.0f, -(radius+0.03));
-		glVertex3f( -radius/1.5,radius/1.5, 0.0f);
-		glVertex3f( -radius/1.5,-radius/1.5, 0.0f);
+		glVertex3f( 0.0f, 0.0f, BIRD_BEAK_A );
+		glVertex3f( BIRD_BEAK_B, BIRD_BEAK_B, 0.0f );
+		glVertex3f( BIRD_BEAK_B,-BIRD_BEAK_B, 0.0f );
+
+		glVertex3f( 0.0f, 0.0f, BIRD_BEAK_A );
+		glVertex3f( -BIRD_BEAK_B, BIRD_BEAK_B, 0.0f );
+		glVertex3f( -BIRD_BEAK_B, -BIRD_BEAK_B, 0.0f );
 
 		// wings
-		glVertex3f( -(radius+0.03), wingPos, 0.0f);
-		glVertex3f(0.0f,radius/3, radius/1.1);
-		glVertex3f(0.0f,radius/3, -radius/1.1);
+		glVertex3f( BIRD_BEAK_A, wingPos, 0.0f );
+		glVertex3f( 0.0f, BIRD_WING_A, BIRD_WING_B );
+		glVertex3f( 0.0f, BIRD_WING_A, -BIRD_WING_B );
 
-		glVertex3f( -(radius+0.03), wingPos, 0.0f);
-		glVertex3f(0.0f, -radius/3, radius/1.1);
-		glVertex3f(0.0f,-radius/3,  -radius/1.1);
+		glVertex3f( BIRD_BEAK_A, wingPos, 0.0f);
+		glVertex3f( 0.0f, -BIRD_WING_A, BIRD_WING_B );
+		glVertex3f( 0.0f, -BIRD_WING_A, -BIRD_WING_B );
 
-		glVertex3f( -(radius+0.03), wingPos, 0.0f);
-		glVertex3f(0.0f,radius/3, radius/1.1);
-		glVertex3f(0.0f, -radius/3, radius/1.1);
+		glVertex3f( BIRD_BEAK_A, wingPos, 0.0f );
+		glVertex3f( 0.0f, BIRD_WING_A, BIRD_WING_B );
+		glVertex3f( 0.0f, -BIRD_WING_A, BIRD_WING_B );
 
-		glVertex3f( -(radius+0.03), wingPos,0.0f);
-		glVertex3f( 0.0f,radius/3, -radius/1.1);
-		glVertex3f( 0.0f,-radius/3, -radius/1.1);
+		glVertex3f( BIRD_BEAK_A, wingPos, 0.0f );
+		glVertex3f( 0.0f, BIRD_WING_A, -BIRD_WING_B );
+		glVertex3f( 0.0f, -BIRD_WING_A, -BIRD_WING_B );
 
-		glVertex3f( (radius+0.03), wingPos, 0.0f);
-		glVertex3f(0.0f,radius/3, radius/1.1);
-		glVertex3f(0.0f,radius/3, -radius/1.1);
+		glVertex3f( -BIRD_BEAK_A, wingPos, 0.0f);
+		glVertex3f( 0.0f, BIRD_WING_A, BIRD_WING_B );
+		glVertex3f( 0.0f, BIRD_WING_A, -BIRD_WING_B );
 
-		glVertex3f( (radius+0.03), wingPos, 0.0f);
-		glVertex3f(0.0f, -radius/3, radius/1.1);
-		glVertex3f(0.0f,-radius/3,  -radius/1.1);
+		glVertex3f( -BIRD_BEAK_A, wingPos, 0.0f );
+		glVertex3f( 0.0f, -BIRD_WING_A, BIRD_WING_B );
+		glVertex3f( 0.0f, -BIRD_WING_A,  -BIRD_WING_B );
 
-		glVertex3f( (radius+0.03), wingPos, 0.0f);
-		glVertex3f(0.0f,radius/3, radius/1.1);
-		glVertex3f(0.0f, -radius/3, radius/1.1);
+		glVertex3f( -BIRD_BEAK_A, wingPos, 0.0f );
+		glVertex3f( 0.0f, BIRD_WING_A, BIRD_WING_B );
+		glVertex3f( 0.0f, -BIRD_WING_A, BIRD_WING_B );
 
-		glVertex3f( (radius+0.03), wingPos,0.0f);
-		glVertex3f( 0.0f,radius/3, -radius/1.1);
-		glVertex3f( 0.0f,-radius/3, -radius/1.1);
+		glVertex3f( -BIRD_BEAK_A, wingPos,0.0f);
+		glVertex3f( 0.0f, BIRD_WING_A, -BIRD_WING_B );
+		glVertex3f( 0.0f, -BIRD_WING_A, -BIRD_WING_B );
 
 	glEnd();
 
 	// eyes
-	glColor3f(1.0, 1.0, 1.0);
-	glTranslatef(0.01f, 0.02f, -radius+0.005);
+/*	glColor3f(1.0, 1.0, 1.0);
+	glTranslatef(0.01f, 0.02f, BIRD_EYE);
 	glutSolidSphere(0.008, 100, 100);
 	glTranslatef(-0.02f, 0.00f, 0);
 	glutSolidSphere(0.008, 100, 100);
@@ -148,6 +150,7 @@ void GLEntities::drawBird(Bird *bird) {
 	glutSolidSphere(0.005, 100, 100);
 	glTranslatef(0.02f, 0.00f, 0.0);
 	glutSolidSphere(0.005, 100, 100);
+*/
 }
 
 void GLEntities::drawTower() {

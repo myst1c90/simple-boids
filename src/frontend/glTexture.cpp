@@ -14,6 +14,22 @@ GLTexture::GLTexture(const char *filename) {
 	}
 }
 
+GLTexture::GLTexture(const char *filename, long size, long bWidth, long bHeight) {
+	FILE *image;
+	char *data = (char*) malloc(size);
+	bWidth = 512;
+	bHeight = 512;
+
+	image = fopen(filename, "rb");
+	fread(data, size, 1, image);
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+
+	gluBuild2DMipmaps(GL_TEXTURE_2D, 0, bWidth, bHeight, GL_RGBA, GL_UNSIGNED_BYTE, data);
+}
+
+
+
 void GLTexture::drawEntire(double x_orig,double y_orig,
 	double x_dest,double y_dest) {
 	glBindTexture(GL_TEXTURE_2D,tex);
@@ -41,3 +57,6 @@ void GLTexture::drawEntireReverseX(double x_orig,double y_orig,
 GLuint GLTexture::getTex() {
 	return tex;
 }
+
+
+

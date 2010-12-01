@@ -53,7 +53,6 @@ void Boids::updateBoidsPosition(Entity *obstacle) {
 		newPosList3[i] = rule3(i);
 	}
 
-
 	// apply the new positions
 	for(int i=1; i<numBoids; i++) {
 		Bird *b = (*boids)[i];
@@ -68,7 +67,6 @@ void Boids::updateBoidsPosition(Entity *obstacle) {
 	}
 }
 
-
 // rule 1: Cohesion - boids try to fly towards the centre of mass of neighbouring boids.
 Vector<float> Boids::rule1(int boidNum) {
 	int numNeighbours = 0;
@@ -80,7 +78,7 @@ Vector<float> Boids::rule1(int boidNum) {
 		if(i!= boidNum)	{
 			Bird *b_i = (*boids)[i];
 			Vector<float> distVec = *b->getPos() - *b_i->getPos();
-			float dist = distVec.magnitude();
+		//	float dist = distVec.magnitude();
 		//	if(dist < MIN_DISTANCE) {
 				center = center + (*b_i->getPos());
 				numNeighbours++;

@@ -53,6 +53,7 @@ void init(void) {
 	TEXTURES[4] = new GLTexture("frontend/images/ZN.bmp");
 	TEXTURES[5] = new GLTexture("frontend/images/ZP.bmp");
 
+
 	STATE = RUNNING;
 	DEBUGGING = false;
 
@@ -120,7 +121,7 @@ void renderScene() {
 
 	// draw world
 	Vector<float> *camPos = new Vector<float>(0.0, 0.0, 0.0);
-	Vector<float> *size = new Vector<float>(50, 50, 50);
+	Vector<float> *size = new Vector<float>(55, 55, 55);
 	renderSkybox(camPos, size);
 
 	// draw Tower
@@ -191,7 +192,7 @@ void renderSkybox(Vector<float> *position, Vector<float> *size)
 
 	// first apply scale matrix
 	glScalef(size->getX(),size->getY(),size->getZ());
-	float cz = -0.0f,cx = 1.0f;
+	float cz = 0.0f,cx = 1.0f;
 	float r = 1.0f;
 
 	glBindTexture(GL_TEXTURE_2D, TEXTURES[3]->getTex());

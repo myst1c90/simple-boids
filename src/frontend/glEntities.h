@@ -18,6 +18,13 @@
 
 #define 	MAX_BOID_DIST	5
 
+#define		BIRD_RADIUS		0.028
+#define		BIRD_BEAK_A		-0.058
+#define		BIRD_BEAK_B		0.018
+#define		BIRD_WING_A		0.009333
+#define		BIRD_WING_B		0.025454
+#define		BIRD_EYE		0.023
+
 
 class GLEntities {
 
